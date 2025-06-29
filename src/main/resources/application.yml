@@ -3,7 +3,7 @@ spring:
     name:
       game-catalog-with-spring-boot
   datasource:
-      url: jdbc:h2:mem:mydb
+      url: jdbc:h2:mem:game-catalog
       username: sa
       password: password
       driverClassName: org.h2.Driver
