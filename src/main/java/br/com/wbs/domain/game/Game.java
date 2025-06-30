@@ -1,7 +1,10 @@
 package br.com.wbs.domain.game;
 
 import br.com.wbs.domain.game.enums.Gender;
+import br.com.wbs.domain.studio.Studio;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -21,25 +24,18 @@ public class Game implements Serializable {
     private String imgUrl;
     private Integer gender;
 
+    @ManyToOne
+    @JoinColumn(name = "studio_id", nullable = false)
+    private Studio studio;
+
     public Game(){}
-    public Game(UUID uuid, String name, String imgUrl, Gender gender) {
+
+    public Game(UUID uuid, String name, String imgUrl, Studio studio, Gender gender) {
         this.uuid = uuid;
         this.name = name;
         this.imgUrl = imgUrl;
+        this.studio = studio;
         setGender(gender);
-    }
-
-    public Game(GameDTODetails gameDTODetails) {
-        this.uuid = gameDTODetails.getUuid();
-        this.name = gameDTODetails.getName();
-        this.imgUrl = gameDTODetails.getImgUrl();
-        this.gender = gameDTODetails.getGender();
-    }
-
-    public Game(GameDTORegister gameDTORegister) {
-        this.name = gameDTORegister.getName();
-        this.imgUrl = gameDTORegister.getImgUrl();
-        this.gender = gameDTORegister.getGender();
     }
 
     public UUID getUuid() {
@@ -74,6 +70,14 @@ public class Game implements Serializable {
         if (gender != null) {
             this.gender = gender.getCode();
         }
+    }
+
+    public Studio getStudio() {
+        return studio;
+    }
+
+    public void setStudio(Studio studio) {
+        this.studio = studio;
     }
 
     @Override
