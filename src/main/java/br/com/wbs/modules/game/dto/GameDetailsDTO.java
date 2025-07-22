@@ -25,7 +25,7 @@ public record GameDetailsDTO(
                 entity.getName(),
                 entity.getGender(),
                 entity.getImgURL(),
-                entity.getStudioId(),
+                entity.getStudio().getId(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );

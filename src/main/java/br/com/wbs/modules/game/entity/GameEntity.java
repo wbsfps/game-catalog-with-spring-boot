@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.URL;
@@ -20,7 +18,10 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity(name = "game")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = "studio")
+@ToString(exclude = "studio")
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameEntity {
@@ -39,11 +40,9 @@ public class GameEntity {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "studio_id", updatable = false, insertable = false)
-    private StudioEntity studioEntity;
+    @JoinColumn(name = "studio_id", nullable = false)
+    private StudioEntity studio;
 
-    @Column(name = "studio_id", nullable = false)
-    private UUID studioId;
 
     @CreationTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
@@ -52,19 +51,20 @@ public class GameEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant updatedAt;
 
-    public GameEntity(GameRegisterDTO dto) {
+    public GameEntity(GameRegisterDTO dto, StudioEntity studio) {
         this.name = dto.name();
         this.gender = dto.gender();
         this.imgURL = dto.imgURL();
-        this.studioId = dto.idStudio();
+        this.studio = studio;
     }
 
-    public GameEntity(GameDetailsDTO dto) {
+    public GameEntity(GameDetailsDTO dto, StudioEntity studio) {
         this.id = dto.id();
         this.name = dto.name();
         this.gender = dto.gender();
         this.imgURL = dto.imgURL();
         this.createdAt = dto.createdAt();
         this.updatedAt = dto.updatedAt();
+        this.studio = studio;
     }
 }

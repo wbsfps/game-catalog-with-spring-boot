@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface GameRepository extends JpaRepository<GameEntity, UUID> {
-    Optional<GameEntity> findByNameOrStudioId(String name, UUID idStudio);
+    Optional<GameEntity> findByName(String name);
 }

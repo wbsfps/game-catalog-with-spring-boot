@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -56,6 +57,7 @@ public class StudioController {
             @ApiResponse(responseCode = "400", description = "Invalid request data",
                     content = @Content(schema = @Schema()))
     })
+    @Transactional(readOnly = true)
     public ResponseEntity<Object> getAllStudios() {
         try {
             var allStudios = findAllStudiosUseCase.execute();
@@ -73,6 +75,7 @@ public class StudioController {
             @ApiResponse(responseCode = "404", description = "Studio not found",
                     content = @Content(schema = @Schema()))
     })
+    @Transactional(readOnly = true)
     public ResponseEntity<Object> getStudio(@PathVariable("id") UUID id) {
         try {
             var studio = findByIdStudioUseCase.execute(id);

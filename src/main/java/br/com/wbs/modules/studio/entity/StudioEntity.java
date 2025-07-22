@@ -5,13 +5,10 @@ import br.com.wbs.modules.studio.dto.StudioDetailsDTO;
 import br.com.wbs.modules.studio.dto.StudioRegisterDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -21,7 +18,10 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity(name = "studio")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = "games")
+@ToString(exclude = "games")
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudioEntity {
@@ -35,7 +35,7 @@ public class StudioEntity {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "studioEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "studio", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<GameEntity> games = new HashSet<>();
 
     @CreationTimestamp
@@ -55,11 +55,12 @@ public class StudioEntity {
     }
 
     public void addGame(GameEntity game) {
+        game.setStudio(this);
         games.add(game);
     }
 
     public int getQuantityGames() {
-        return games.size();
+        return games != null ? games.size() : 0;
     }
 
 }

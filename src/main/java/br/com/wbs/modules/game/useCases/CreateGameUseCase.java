@@ -9,6 +9,7 @@ import br.com.wbs.modules.studio.repository.StudioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class CreateGameUseCase {
 
@@ -20,12 +21,11 @@ public class CreateGameUseCase {
     public GameDetailsDTO execute(GameRegisterDTO gameRegisterDTO) {
         var studio = studioRepository.findById(gameRegisterDTO.idStudio()).orElseThrow(StudioNotFoundException::new);
 
-        var game = new GameEntity(gameRegisterDTO);
-        game.setStudioEntity(studio);
-        game.setStudioId(studio.getId());
+        var game = new GameEntity(gameRegisterDTO, studio);
+        studio.addGame(game);
 
         var gameSaved = gameRepository.save(game);
-        studio.addGame(gameSaved);
+        studioRepository.save(studio);
 
         return new GameDetailsDTO(gameSaved);
     }
