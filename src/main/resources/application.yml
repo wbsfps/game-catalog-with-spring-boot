@@ -3,10 +3,11 @@ spring:
     name:
       game-catalog-with-spring-boot
   datasource:
-      url: jdbc:h2:mem:game-catalog
-      username: sa
-      password: password
-      driverClassName: org.h2.Driver
+      url: jdbc:postgresql://localhost:5432/game_catalog
+      username: admin
+      password: admin
   jpa:
     open-in-view: false
+    hibernate:
+      ddl-auto: update
   logging: Debug
