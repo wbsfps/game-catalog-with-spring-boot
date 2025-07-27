@@ -3,7 +3,6 @@ package br.com.wbs.modules.studio.useCases;
 import br.com.wbs.exceptions.StudioFoundException;
 import br.com.wbs.modules.studio.dto.StudioDetailsDTO;
 import br.com.wbs.modules.studio.dto.StudioRegisterDTO;
-import br.com.wbs.modules.studio.entity.StudioEntity;
 import br.com.wbs.modules.studio.repository.StudioRepository;
 import br.com.wbs.modules.studio.utils.StudioMapper;
 import org.springframework.beans.factory.annotation.Autowired;
