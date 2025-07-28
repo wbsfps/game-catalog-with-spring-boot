@@ -22,7 +22,7 @@ public class StudioRepositoryTest {
 
     @Test
     @DisplayName("Should get Studio successfully from DB")
-    void findByNameCase1() {
+    void createStudioCase1() {
         var data = new StudioRegisterDTO("STUDIO_TEST");
         this.createStudio(data);
 
@@ -33,7 +33,7 @@ public class StudioRepositoryTest {
 
     @Test
     @DisplayName("Should not get Studio from DB when Studio not exists")
-    void findByNameCase2() {
+    void createStudioCase2() {
         var data = new StudioRegisterDTO("STUDIO_TEST");
         Optional<StudioEntity> result = studioRepository.findByName(data.name());
 
