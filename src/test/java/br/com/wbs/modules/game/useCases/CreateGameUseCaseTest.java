@@ -1,5 +1,6 @@
 package br.com.wbs.modules.game.useCases;
 
+import br.com.wbs.exceptions.StudioNotFoundException;
 import br.com.wbs.modules.game.dto.GameRegisterDTO;
 import br.com.wbs.modules.game.entity.GameEntity;
 import br.com.wbs.modules.game.enums.Gender;
@@ -19,8 +20,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class CreateGameUseCaseTest {
@@ -58,5 +58,25 @@ class CreateGameUseCaseTest {
         verify(gameRepository, times(1)).save(any());
         verify(studioRepository, times(1)).save(studio);
         assertEquals(1, studio.getGames().size());
+    }
+
+    @Test
+    void noCreateGameIfStudioNotExists() {
+        var gameRegisterDTO = new GameRegisterDTO(
+                "GAME_TEST", Gender.ACTION, "https://rockstar.com/gta.png", null);
+
+        when(gameRepository.findByName("GAME_TEST")).thenReturn(Optional.empty());
+
+        when(gameRepository.save(any())).thenAnswer(invocation -> {
+            var game = new GameEntity(gameRegisterDTO, null);
+            game.setId(UUID.randomUUID());
+            return game;
+        });
+
+        try {
+            createGameUseCase.execute(gameRegisterDTO);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(StudioNotFoundException.class);
+        }
     }
 }
